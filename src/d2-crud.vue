@@ -548,8 +548,8 @@
             </el-button>
             <template
               v-for="(item, index) in handleAttribute(rowHandle.custom, [])"
-              :key="index">
-              <el-button
+              >
+              <el-button :key="index"
                 v-if="handleRowHandleButtonShow(item.show, scope.$index, scope.row)"
                 :disabled="handleRowHandleButtonDisabled(item.disabled, scope.$index, scope.row)"
                 v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item) : item"
@@ -586,8 +586,8 @@
         v-bind="formOptions"
       >
         <el-row v-bind="formOptions">
-          <template v-for="(value, key, index) in formData" :key="index">
-            <el-col
+          <template v-for="(value, key, index) in formData" >
+            <el-col :key="index"
               v-if="handleFormTemplateMode(key).component ? handleAttribute(handleFormTemplateMode(key).component.show, true) : true"
               :span="handleFormTemplateMode(key).component ? handleAttribute(handleFormTemplateMode(key).component.span, 24) : 24"
               :offset="handleFormTemplateMode(key).component ? handleAttribute(handleFormTemplateMode(key).component.offset, 0) : 0"
