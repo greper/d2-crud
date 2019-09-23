@@ -52,8 +52,11 @@
           v-bind="item"
         >
           <template slot-scope="scope">
+            <template v-if="item.rowSlot === true">
+              <slot :name="item.key+'Slot'" v-bind:row="scope.row"></slot>
+            </template>
             <el-input
-              v-if="item.component && item.component.name === 'el-input'"
+              v-else-if="item.component && item.component.name === 'el-input'"
               v-model="scope.row[item.key]"
               v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item.component) : item.component"
               @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
@@ -198,9 +201,6 @@
               :scope="scope"
             >
             </render-component>
-            <template v-else-if="item.rowSlot === true">
-              <slot :name="item.key+'Slot'" v-bind:row="scope.row"></slot>
-            </template>
             <template v-else>{{item.formatter ? item.formatter(scope.row, scope.column, _get(scope.row, item.key), scope.$index) : _get(scope.row, item.key)}}</template>
           </template>
           <template v-if="item.children">
