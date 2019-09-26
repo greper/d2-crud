@@ -1,6 +1,13 @@
 
 ## 在原d2-crud基础上做出如下改进
-###1.支持插槽自定义组件【slot】   
+###1.支持隐藏表格，自定义列表展示方式
+```
+配置options.hide=true
+<d2-crud  ...>
+  <template slot="body">自定义列表</template>
+</d2-crud>
+```
+###2.支持字段组件通过插槽自定义【slot】   
 * #### crud配置
 ```
 export const crudOptions = {
@@ -66,8 +73,8 @@ export const crudOptions = {
   </d2-container>
 </template>
 ```
-###2.支持导出内部的组件，以便外部可以单独使用其中某些组件   
-比如：renderCustomComponent、edit、add、dialog等
+
+
 
 
 ![](https://raw.githubusercontent.com/d2-projects/d2-crud/master/doc/image/banner.png)
