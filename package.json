@@ -1,16 +1,17 @@
 {
-  "name": "@d2-projects/d2-crud",
-  "description": "A d2-projects project",
-  "version": "2.0.5",
-  "author": "孙昊翔 <673686754@qq.com>",
+  "name": "d2-crud-x",
+  "description": "d2-crud改进版",
+  "version": "2.0.5-1.0.0",
+  "author": "Greper <252959493@qq.com>",
   "license": "MIT",
   "private": false,
   "main": "dist/d2-crud.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/d2-projects/d2-crud"
+    "url": "https://github.com/greper/d2-crud"
   },
   "keywords": [
+    "d2-crud-x",
     "d2-crud",
     "table",
     "d2-projects",
