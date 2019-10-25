@@ -743,14 +743,17 @@
                   v-model="formData[key]"
                   :component-name="handleFormTemplateMode(key).component.name"
                   :props="handleFormTemplateMode(key).component.props ? handleFormTemplateMode(key).component.props : null"
+                  @change="$emit('form-data-change', {key: key, value: value})"
                 >
                 </render-custom-component>
                 <render-component
                   v-else-if="handleFormTemplateMode(key).component.render"
                   :render-function="handleFormTemplateMode(key).component.render"
                   :scope="formData[key]"
+                  @change="$emit('form-data-change', {key: key, value: value})"
                 >
                 </render-component>
+                <div class="form-item-helper" v-if="handleFormTemplateMode(key).helper">{{handleFormTemplateMode(key).helper}}</div>
               </el-form-item>
             </el-col>
           </template>
@@ -819,6 +822,12 @@ export default {
   }
   .d2-crud-pagination {
     padding: 15px 0;
+  }
+  .form-item-helper{
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: #737373;
   }
 }
 </style>
