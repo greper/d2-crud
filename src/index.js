@@ -1,7 +1,4 @@
 import d2Crud from './d2-crud.vue'
-import renderComponent from './components/renderComponent.vue'
-import renderCustomComponent from './components/renderCustomComponent.vue'
-
 const install = (Vue, options) => {
   if (options) {
     Vue.prototype.$d2CrudSize = options.size ? options.size : null
