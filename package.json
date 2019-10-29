@@ -5,7 +5,7 @@
   "author": "Greper <252959493@qq.com>",
   "license": "MIT",
   "private": false,
-  "main": "dist/d2-crud-x.common.js",
+  "main": "dist/d2-crud-x.umd.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/greper/d2-crud"
