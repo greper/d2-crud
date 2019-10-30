@@ -22,11 +22,10 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "build:lib": "vue-cli-service build --target lib ./src/index.js"
+    "build:lib": "vue-cli-service build --report --target lib ./src/index.js",
+    "analyze": "cross-env NODE_ENV=production NODE_ENV.env.BUILD_ANALYZE=true npm_config_report=true npm run build:lib"
   },
   "dependencies": {
-    "core-js": "^2.6.5",
-    "vue": "^2.6.10",
     "lodash.clonedeep": "^4.5.0",
     "lodash.foreach": "^4.5.0",
     "lodash.get": "^4.4.2",
@@ -42,7 +41,9 @@
     "eslint-plugin-vue": "^5.0.0",
     "sass": "^1.22.12",
     "sass-loader": "^7.3.1",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "core-js": "^2.6.5",
+    "vue": "^2.6.10"
   },
   "eslintConfig": {
     "root": true,
