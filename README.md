@@ -75,7 +75,8 @@ export const crudOptions = {
 ```
 
 ### 3.自定义组件支持formDataChange事件   
-能够在某个字段change后修改form表单的其他值
+1. 能够在某个字段change后修改form表单的其他值
+2. 修复formDataChange获取的值是旧值的bug
 
 
 
