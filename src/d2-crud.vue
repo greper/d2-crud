@@ -58,25 +58,11 @@
             <template v-if="item.rowSlot === true">
               <slot :name="item.key+'Slot'" v-bind:row="scope.row"></slot>
             </template>
-            <el-input
-              v-else-if="item.component && item.component.name === 'el-input'"
-              v-model="scope.row[item.key]"
-              v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item.component) : item.component"
-              @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
-            >
-            </el-input>
-            <el-input-number
-              v-else-if="item.component && item.component.name === 'el-input-number'"
-              v-model="scope.row[item.key]"
-              v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item.component) : item.component"
-              @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
-            >
-            </el-input-number>
             <el-radio-group
               v-else-if="item.component && item.component.name === 'el-radio'"
               v-model="scope.row[item.key]"
               v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item.component) : item.component"
-              @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
+              @change="handleCellDataChange($event, {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
             >
               <template v-if="item.component.buttonMode">
                 <el-radio-button
@@ -101,7 +87,7 @@
               v-else-if="item.component && item.component.name === 'el-checkbox'"
               v-model="scope.row[item.key]"
               v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item.component) : item.component"
-              @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
+              @change="handleCellDataChange($event, {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
             >
               <template v-if="item.component.buttonMode">
                 <el-checkbox-button
@@ -126,7 +112,7 @@
               v-else-if="item.component && item.component.name === 'el-select'"
               v-model="scope.row[item.key]"
               v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item.component) : item.component"
-              @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
+              @change="handleCellDataChange($event, {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
             >
               <el-option
                 v-for="option in item.component.options"
@@ -135,72 +121,18 @@
               >
               </el-option>
             </el-select>
-            <el-cascader
-              v-else-if="item.component && item.component.name === 'el-cascader'"
-              v-model="scope.row[item.key]"
-              v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item.component) : item.component"
-              @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
-            >
-            </el-cascader>
-            <el-switch
-              v-else-if="item.component && item.component.name === 'el-switch'"
-              v-model="scope.row[item.key]"
-              v-bind="item.component"
-              @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
-            >
-            </el-switch>
-            <el-slider
-              v-else-if="item.component && item.component.name === 'el-slider'"
-              v-model="scope.row[item.key]"
-              v-bind="item.component"
-              @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
-            >
-            </el-slider>
-            <el-time-select
-              v-else-if="item.component && item.component.name === 'el-time-select'"
-              v-model="scope.row[item.key]"
-              v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item.component) : item.component"
-              @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
-            >
-            </el-time-select>
-            <el-time-picker
-              v-else-if="item.component && item.component.name === 'el-time-picker'"
-              v-model="scope.row[item.key]"
-              v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item.component) : item.component"
-              @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
-            >
-            </el-time-picker>
-            <el-date-picker
-              v-else-if="item.component && item.component.name === 'el-date-picker'"
-              v-model="scope.row[item.key]"
-              v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item.component) : item.component"
-              @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
-            >
-            </el-date-picker>
-            <el-rate
-              v-else-if="item.component && item.component.name === 'el-rate'"
-              v-model="scope.row[item.key]"
-              v-bind="item.component"
-              @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
-            >
-            </el-rate>
-            <el-color-picker
-              v-else-if="item.component && item.component.name === 'el-color-picker'"
-              v-model="scope.row[item.key]"
-              v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item.component) : item.component"
-              @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
-            >
-            </el-color-picker>
             <render-custom-component
               v-else-if="item.component && item.component.name"
               v-model="scope.row[item.key]"
               :component-name="item.component.name"
               :props="item.component.props ? item.component.props : null"
+              @change="handleCellDataChange($event, {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
               :scope="scope">
             </render-custom-component>
             <render-component
               v-else-if="item.component && item.component.render"
               :render-function="item.component.render"
+              @change="handleCellDataChange($event, {rowIndex: scope.$index, key: item.key, value: scope.row[item.key], row: scope.row})"
               :scope="scope"
             >
             </render-component>
@@ -215,25 +147,11 @@
               v-bind="item2"
             >
               <template slot-scope="scope">
-                <el-input
-                  v-if="item2.component && item2.component.name === 'el-input'"
-                  v-model="scope.row[item2.key]"
-                  v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item2.component) : item2.component"
-                  @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
-                >
-                </el-input>
-                <el-input-number
-                  v-else-if="item2.component && item2.component.name === 'el-input-number'"
-                  v-model="scope.row[item2.key]"
-                  v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item2.component) : item2.component"
-                  @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
-                >
-                </el-input-number>
                 <el-radio-group
-                  v-else-if="item2.component && item2.component.name === 'el-radio'"
+                  v-if="item2.component && item2.component.name === 'el-radio'"
                   v-model="scope.row[item2.key]"
                   v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item2.component) : item2.component"
-                  @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
+                  @change="handleCellDataChange($event,  {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
                 >
                   <template v-if="item2.component.buttonMode">
                     <el-radio-button
@@ -258,7 +176,7 @@
                   v-else-if="item2.component && item2.component.name === 'el-checkbox'"
                   v-model="scope.row[item2.key]"
                   v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item2.component) : item2.component"
-                  @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
+                  @change="handleCellDataChange($event,  {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
                 >
                   <template v-if="item2.component.buttonMode">
                     <el-checkbox-button
@@ -283,7 +201,7 @@
                   v-else-if="item2.component && item2.component.name === 'el-select'"
                   v-model="scope.row[item2.key]"
                   v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item2.component) : item2.component"
-                  @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
+                  @change="handleCellDataChange($event,  {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
                 >
                   <el-option
                     v-for="option in item2.component.options"
@@ -292,72 +210,18 @@
                   >
                   </el-option>
                 </el-select>
-                <el-cascader
-                  v-else-if="item2.component && item2.component.name === 'el-cascader'"
-                  v-model="scope.row[item2.key]"
-                  v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item2.component) : item2.component"
-                  @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
-                >
-                </el-cascader>
-                <el-switch
-                  v-else-if="item2.component && item2.component.name === 'el-switch'"
-                  v-model="scope.row[item2.key]"
-                  v-bind="item2.component"
-                  @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
-                >
-                </el-switch>
-                <el-slider
-                  v-else-if="item2.component && item2.component.name === 'el-slider'"
-                  v-model="scope.row[item2.key]"
-                  v-bind="item2.component"
-                  @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
-                >
-                </el-slider>
-                <el-time-select
-                  v-else-if="item2.component && item2.component.name === 'el-time-select'"
-                  v-model="scope.row[item2.key]"
-                  v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item2.component) : item2.component"
-                  @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
-                >
-                </el-time-select>
-                <el-time-picker
-                  v-else-if="item2.component && item2.component.name === 'el-time-picker'"
-                  v-model="scope.row[item2.key]"
-                  v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item2.component) : item2.component"
-                  @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
-                >
-                </el-time-picker>
-                <el-date-picker
-                  v-else-if="item2.component && item2.component.name === 'el-date-picker'"
-                  v-model="scope.row[item2.key]"
-                  v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item2.component) : item2.component"
-                  @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
-                >
-                </el-date-picker>
-                <el-rate
-                  v-else-if="item2.component && item2.component.name === 'el-rate'"
-                  v-model="scope.row[item2.key]"
-                  v-bind="item2.component"
-                  @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
-                >
-                </el-rate>
-                <el-color-picker
-                  v-else-if="item2.component && item2.component.name === 'el-color-picker'"
-                  v-model="scope.row[item2.key]"
-                  v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item2.component) : item2.component"
-                  @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
-                >
-                </el-color-picker>
                 <render-custom-component
                   v-else-if="item2.component && item2.component.name"
                   v-model="scope.row[item2.key]"
                   :component-name="item2.component.name"
                   :props="item2.component.props ? item2.component.props : null"
+                  @change="handleCellDataChange($event,  {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
                   :scope="scope">
                 </render-custom-component>
                 <render-component
                   v-else-if="item2.component && item2.component.render"
                   :render-function="item2.component.render"
+                  @change="handleCellDataChange($event,  {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
                   :scope="scope"
                 >
                 </render-component>
@@ -372,25 +236,11 @@
                   v-bind="item3"
                 >
                   <template slot-scope="scope">
-                    <el-input
-                      v-if="item3.component && item3.component.name === 'el-input'"
-                      v-model="scope.row[item3.key]"
-                      v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item3.component) : item3.component"
-                      @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
-                    >
-                    </el-input>
-                    <el-input-number
-                      v-else-if="item3.component && item3.component.name === 'el-input-number'"
-                      v-model="scope.row[item3.key]"
-                      v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item3.component) : item3.component"
-                      @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
-                    >
-                    </el-input-number>
                     <el-radio-group
-                      v-else-if="item3.component && item3.component.name === 'el-radio'"
+                      v-if="item3.component && item3.component.name === 'el-radio'"
                       v-model="scope.row[item3.key]"
                       v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item3.component) : item3.component"
-                      @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
+                      @change="handleCellDataChange($event, {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
                     >
                       <template v-if="item3.component.buttonMode">
                         <el-radio-button
@@ -415,7 +265,7 @@
                       v-else-if="item3.component && item3.component.name === 'el-checkbox'"
                       v-model="scope.row[item3.key]"
                       v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item3.component) : item3.component"
-                      @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
+                      @change="handleCellDataChange($event, {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
                     >
                       <template v-if="item3.component.buttonMode">
                         <el-checkbox-button
@@ -440,7 +290,7 @@
                       v-else-if="item3.component && item3.component.name === 'el-select'"
                       v-model="scope.row[item3.key]"
                       v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item3.component) : item3.component"
-                      @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
+                      @change="handleCellDataChange($event, {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
                     >
                       <el-option
                         v-for="option in item3.component.options"
@@ -449,72 +299,18 @@
                       >
                       </el-option>
                     </el-select>
-                    <el-cascader
-                      v-else-if="item3.component && item3.component.name === 'el-cascader'"
-                      v-model="scope.row[item3.key]"
-                      v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item3.component) : item3.component"
-                      @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
-                    >
-                    </el-cascader>
-                    <el-switch
-                      v-else-if="item3.component && item3.component.name === 'el-switch'"
-                      v-model="scope.row[item3.key]"
-                      v-bind="item3.component"
-                      @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
-                    >
-                    </el-switch>
-                    <el-slider
-                      v-else-if="item3.component && item3.component.name === 'el-slider'"
-                      v-model="scope.row[item3.key]"
-                      v-bind="item3.component"
-                      @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
-                    >
-                    </el-slider>
-                    <el-time-select
-                      v-else-if="item3.component && item3.component.name === 'el-time-select'"
-                      v-model="scope.row[item3.key]"
-                      v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item3.component) : item3.component"
-                      @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
-                    >
-                    </el-time-select>
-                    <el-time-picker
-                      v-else-if="item3.component && item3.component.name === 'el-time-picker'"
-                      v-model="scope.row[item3.key]"
-                      v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item3.component) : item3.component"
-                      @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
-                    >
-                    </el-time-picker>
-                    <el-date-picker
-                      v-else-if="item3.component && item3.component.name === 'el-date-picker'"
-                      v-model="scope.row[item3.key]"
-                      v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item3.component) : item3.component"
-                      @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
-                    >
-                    </el-date-picker>
-                    <el-rate
-                      v-else-if="item3.component && item3.component.name === 'el-rate'"
-                      v-model="scope.row[item3.key]"
-                      v-bind="item3.component"
-                      @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
-                    >
-                    </el-rate>
-                    <el-color-picker
-                      v-else-if="item3.component && item3.component.name === 'el-color-picker'"
-                      v-model="scope.row[item3.key]"
-                      v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item3.component) : item3.component"
-                      @change="$emit('cell-data-change', {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
-                    >
-                    </el-color-picker>
                     <render-custom-component
                       v-else-if="item3.component && item3.component.name"
                       v-model="scope.row[item3.key]"
                       :component-name="item3.component.name"
                       :props="item3.component.props ? item3.component.props : null"
+                      @change="handleCellDataChange($event,  {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
                       :scope="scope">
                     </render-custom-component>
                     <render-component
                       v-else-if="item3.component && item3.component.render"
                       :render-function="item3.component.render"
+                      @change="handleCellDataChange($event, {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
                       :scope="scope"
                     >
                     </render-component>
@@ -609,21 +405,14 @@
                   v-else-if="(!handleFormTemplateMode(key).component) ||((!handleFormTemplateMode(key).component.name) && (!handleFormTemplateMode(key).component.render)) || handleFormTemplateMode(key).component.name === 'el-input'"
                   v-model="formData[key]"
                   v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, handleFormTemplateMode(key).component) : handleFormTemplateMode(key).component"
-                  @change="$emit('form-data-change', {key: key, value: value})"
+                  @change="handleFormDataChange($event,key)"
                 >
                 </el-input>
-                <el-input-number
-                  v-else-if="handleFormTemplateMode(key).component.name === 'el-input-number'"
-                  v-model="formData[key]"
-                  v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, handleFormTemplateMode(key).component) : handleFormTemplateMode(key).component"
-                  @change="$emit('form-data-change', {key: key, value: value})"
-                >
-                </el-input-number>
                 <el-radio-group
                   v-else-if="handleFormTemplateMode(key).component.name === 'el-radio'"
                   v-model="formData[key]"
                   v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, handleFormTemplateMode(key).component) : handleFormTemplateMode(key).component"
-                  @change="$emit('form-data-change', {key: key, value: value})"
+                  @change="handleFormDataChange($event,key)"
                 >
                   <template v-if="handleFormTemplateMode(key).component.buttonMode">
                     <el-radio-button
@@ -648,7 +437,7 @@
                   v-else-if="handleFormTemplateMode(key).component.name === 'el-checkbox'"
                   v-model="formData[key]"
                   v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, handleFormTemplateMode(key).component) : handleFormTemplateMode(key).component"
-                  @change="$emit('form-data-change', {key: key, value: value})"
+                  @change="handleFormDataChange($event,key)"
                 >
                   <template v-if="handleFormTemplateMode(key).component.buttonMode">
                     <el-checkbox-button
@@ -673,7 +462,7 @@
                   v-else-if="handleFormTemplateMode(key).component.name === 'el-select'"
                   v-model="formData[key]"
                   v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, handleFormTemplateMode(key).component) : handleFormTemplateMode(key).component"
-                  @change="$emit('form-data-change', {key: key, value: value})"
+                  @change="handleFormDataChange($event,key)"
                 >
                   <el-option
                     v-for="option in handleFormTemplateMode(key).component.options"
@@ -682,75 +471,19 @@
                   >
                   </el-option>
                 </el-select>
-                <el-cascader
-                  v-else-if="handleFormTemplateMode(key).component.name === 'el-cascader'"
-                  v-model="formData[key]"
-                  v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, handleFormTemplateMode(key).component) : handleFormTemplateMode(key).component"
-                  @change="$emit('form-data-change', {key: key, value: value})"
-                >
-                </el-cascader>
-                <el-switch
-                  v-else-if="handleFormTemplateMode(key).component.name === 'el-switch'"
-                  v-model="formData[key]"
-                  v-bind="handleFormTemplateMode(key).component"
-                  @change="$emit('form-data-change', {key: key, value: value})"
-                >
-                </el-switch>
-                <el-slider
-                  v-else-if="handleFormTemplateMode(key).component.name === 'el-slider'"
-                  v-model="formData[key]"
-                  v-bind="handleFormTemplateMode(key).component"
-                  @change="$emit('form-data-change', {key: key, value: value})"
-                >
-                </el-slider>
-                <el-time-select
-                  v-else-if="handleFormTemplateMode(key).component.name === 'el-time-select'"
-                  v-model="formData[key]"
-                  v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, handleFormTemplateMode(key).component) : handleFormTemplateMode(key).component"
-                  @change="$emit('form-data-change', {key: key, value: value})"
-                >
-                </el-time-select>
-                <el-time-picker
-                  v-else-if="handleFormTemplateMode(key).component.name === 'el-time-picker'"
-                  v-model="formData[key]"
-                  v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, handleFormTemplateMode(key).component) : handleFormTemplateMode(key).component"
-                  @change="$emit('form-data-change', {key: key, value: value})"
-                >
-                </el-time-picker>
-                <el-date-picker
-                  v-else-if="handleFormTemplateMode(key).component.name === 'el-date-picker'"
-                  v-model="formData[key]"
-                  v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, handleFormTemplateMode(key).component) : handleFormTemplateMode(key).component"
-                  @change="$emit('form-data-change', {key: key, value: value})"
-                >
-                </el-date-picker>
-                <el-rate
-                  v-else-if="handleFormTemplateMode(key).component.name === 'el-rate'"
-                  v-model="formData[key]"
-                  v-bind="handleFormTemplateMode(key).component"
-                  @change="$emit('form-data-change', {key: key, value: value})"
-                >
-                </el-rate>
-                <el-color-picker
-                  v-else-if="handleFormTemplateMode(key).component.name === 'el-color-picker'"
-                  v-model="formData[key]"
-                  v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, handleFormTemplateMode(key).component) : handleFormTemplateMode(key).component"
-                  @change="$emit('form-data-change', {key: key, value: value})"
-                >
-                </el-color-picker>
                 <render-custom-component
                   v-else-if="handleFormTemplateMode(key).component.name"
                   v-model="formData[key]"
                   :component-name="handleFormTemplateMode(key).component.name"
                   :props="handleFormTemplateMode(key).component.props ? handleFormTemplateMode(key).component.props : null"
-                  @change="$emit('form-data-change', {key: key, value: value})"
+                  @change="handleFormDataChange($event,key)"
                 >
                 </render-custom-component>
                 <render-component
                   v-else-if="handleFormTemplateMode(key).component.render"
                   :render-function="handleFormTemplateMode(key).component.render"
                   :scope="formData[key]"
-                  @change="$emit('form-data-change', {key: key, value: value})"
+                  @change="handleFormDataChange($event,key)"
                 >
                 </render-component>
                 <div class="form-item-helper" v-if="handleFormTemplateMode(key).helper">{{handleFormTemplateMode(key).helper}}</div>
@@ -807,6 +540,15 @@ export default {
     renderComponent,
     renderCustomComponent
     // d2Column
+  },
+  methods: {
+    handleFormDataChange (value, key) {
+      this.$emit('form-data-change', { key: key, value: value })
+    },
+    handleCellDataChange (value, column) {
+      column.value = value
+      this.$emit('cell-data-change', column)
+    }
   }
 }
 </script>

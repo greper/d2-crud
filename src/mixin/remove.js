@@ -10,12 +10,12 @@ export default {
           cancelButtonText: this.handleAttribute(this.rowHandle.remove.cancelButtonText, '取消'),
           type: this.handleAttribute(this.rowHandle.remove.type, 'error')
         }).then(() => {
-          this.$emit('row-remove', {index, row: indexrow}, () => {
+          this.$emit('row-remove', { index, row: indexrow }, () => {
             this.handleRemoveDone(index)
           })
         }).catch(() => {})
       } else {
-        this.$emit('row-remove', {index, row: indexrow}, () => {
+        this.$emit('row-remove', { index, row: indexrow }, () => {
           this.handleRemoveDone(index)
         })
       }
