@@ -543,7 +543,6 @@ export default {
   },
   methods: {
     handleFormDataChange (value, key) {
-      console.log('form-data-change', { key: key, value: value })
       this.$emit('form-data-change', { key: key, value: value })
     },
     handleCellDataChange (value, column) {
@@ -571,6 +570,7 @@ export default {
     margin-top: 5px;
     margin-bottom: 5px;
     color: #737373;
+    line-height: normal;
   }
 }
 </style>
