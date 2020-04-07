@@ -543,11 +543,11 @@ export default {
   },
   methods: {
     handleFormDataChange (value, key) {
-      this.$emit('form-data-change', { key: key, value: value })
+      this.$emit('form-data-change', { key: key, value: value, form:this.formData })
     },
-    handleCellDataChange (value, column) {
+    handleCellDataChange (value, column, row) {
       column.value = value
-      this.$emit('cell-data-change', column)
+      this.$emit('cell-data-change', { key: column.key, value: value, row:row })
     }
   }
 }
