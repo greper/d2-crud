@@ -19,7 +19,6 @@ export default {
     handleEdit (index, row, templage = null) {
       this.formMode = 'edit'
       this.editDataStorage = _clonedeep(row)
-      this.isDialogShow = true
       this.$emit('dialog-open', {
         mode: 'edit',
         row
@@ -32,9 +31,22 @@ export default {
         this.formData = this.editTemplate ? _clonedeep(this.editTemplate) : {}
         this.editTemplateStorage = this.editTemplate ? _clonedeep(this.editTemplate) : {}
       }
-      _forEach(this.formData, (value, key) => {
-        this.formData[key] = row.hasOwnProperty(key) ? row[key] : ''
+
+      this.fetchDetail(index, row).then(newRow => {
+        _forEach(this.formData, (value, key) => {
+          this.formData[key] = newRow.hasOwnProperty(key) ? newRow[key] : ''
+        })
+        this.isDialogShow = true
       })
+    },
+    fetchDetail (index, row) {
+      if (this.options.fetchDetail != null) {
+        return this.options.fetchDetail(index, row)
+      } else {
+        return new Promise(resolve => {
+          resolve(row)
+        })
+      }
     }
   }
 }
