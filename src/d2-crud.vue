@@ -115,8 +115,6 @@
                 </render-component>
                 <template v-else>{{item2.formatter ? item2.formatter(scope.row, scope.column, _get(scope.row, item2.key), scope.$index) : _get(scope.row, item2.key)}}</template>
               </template>
-
-
               <template v-if="item2.children">
                 <el-table-column
                   v-for="(item3, index3) in item2.children"
@@ -153,9 +151,6 @@
             </el-table-column>
           </template>
         </el-table-column>
-
-
-
         <el-table-column
           v-if="rowHandle"
           :label="handleAttribute(rowHandle.columnHeader, '操作')"
