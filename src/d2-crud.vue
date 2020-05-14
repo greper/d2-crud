@@ -40,6 +40,16 @@
         >
         </el-table-column>
         <el-table-column
+          v-if="expandRow || expandRow === ''"
+          type="expand"
+          :label="handleAttribute(expandRow.title, '')"
+          v-bind="expandRow"
+        >
+          <template slot-scope="scope">
+            <slot :name="'expandSlot'" v-bind:row="scope.row"></slot>
+          </template>
+        </el-table-column>
+        <el-table-column
           v-if="indexRow || indexRow === ''"
           type="index"
           :label="handleAttribute(indexRow.title, '')"
@@ -138,191 +148,6 @@
             </render-component>
             <template v-else>{{item.formatter ? item.formatter(scope.row, scope.column, _get(scope.row, item.key), scope.$index) : _get(scope.row, item.key)}}</template>
           </template>
-          <template v-if="item.children">
-            <el-table-column
-              v-for="(item2, index2) in item.children"
-              :key="index2"
-              :label="handleAttribute(item2.title, '')"
-              :prop="handleAttribute(item2.key, null)"
-              v-bind="item2"
-            >
-              <template slot-scope="scope">
-                <el-radio-group
-                  v-if="item2.component && item2.component.name === 'el-radio'"
-                  v-model="scope.row[item2.key]"
-                  v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item2.component) : item2.component"
-                  @change="handleCellDataChange($event,  {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
-                >
-                  <template v-if="item2.component.buttonMode">
-                    <el-radio-button
-                      v-for="option in item2.component.options"
-                      :key="option.value"
-                      :label="option.value"
-                    >
-                      {{option.label}}
-                    </el-radio-button>
-                  </template>
-                  <template v-else>
-                    <el-radio
-                      v-for="option in item2.component.options"
-                      :key="option.value"
-                      :label="option.value"
-                    >
-                      {{option.label}}
-                    </el-radio>
-                  </template>
-                </el-radio-group>
-                <el-checkbox-group
-                  v-else-if="item2.component && item2.component.name === 'el-checkbox'"
-                  v-model="scope.row[item2.key]"
-                  v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item2.component) : item2.component"
-                  @change="handleCellDataChange($event,  {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
-                >
-                  <template v-if="item2.component.buttonMode">
-                    <el-checkbox-button
-                      v-for="option in item2.component.options"
-                      :key="option.value"
-                      :label="option.value"
-                    >
-                      {{option.label}}
-                    </el-checkbox-button>
-                  </template>
-                  <template v-else>
-                    <el-checkbox
-                      v-for="option in item2.component.options"
-                      :key="option.value"
-                      :label="option.value"
-                    >
-                      {{option.label}}
-                    </el-checkbox>
-                  </template>
-                </el-checkbox-group>
-                <el-select
-                  v-else-if="item2.component && item2.component.name === 'el-select'"
-                  v-model="scope.row[item2.key]"
-                  v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item2.component) : item2.component"
-                  @change="handleCellDataChange($event,  {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
-                >
-                  <el-option
-                    v-for="option in item2.component.options"
-                    :key="option.value"
-                    v-bind="option"
-                  >
-                  </el-option>
-                </el-select>
-                <render-custom-component
-                  v-else-if="item2.component && item2.component.name"
-                  v-model="scope.row[item2.key]"
-                  :component-name="item2.component.name"
-                  :props="item2.component.props ? item2.component.props : null"
-                  @change="handleCellDataChange($event,  {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
-                  :scope="scope">
-                </render-custom-component>
-                <render-component
-                  v-else-if="item2.component && item2.component.render"
-                  :render-function="item2.component.render"
-                  @change="handleCellDataChange($event,  {rowIndex: scope.$index, key: item2.key, value: scope.row[item2.key], row: scope.row})"
-                  :scope="scope"
-                >
-                </render-component>
-                <template v-else>{{item2.formatter ? item2.formatter(scope.row, scope.column, _get(scope.row, item2.key), scope.$index) : _get(scope.row, item2.key)}}</template>
-              </template>
-              <template v-if="item2.children">
-                <el-table-column
-                  v-for="(item3, index3) in item2.children"
-                  :key="index3"
-                  :label="handleAttribute(item3.title, '')"
-                  :prop="handleAttribute(item3.key, null)"
-                  v-bind="item3"
-                >
-                  <template slot-scope="scope">
-                    <el-radio-group
-                      v-if="item3.component && item3.component.name === 'el-radio'"
-                      v-model="scope.row[item3.key]"
-                      v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item3.component) : item3.component"
-                      @change="handleCellDataChange($event, {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
-                    >
-                      <template v-if="item3.component.buttonMode">
-                        <el-radio-button
-                          v-for="option in item3.component.options"
-                          :key="option.value"
-                          :label="option.value"
-                        >
-                          {{option.label}}
-                        </el-radio-button>
-                      </template>
-                      <template v-else>
-                        <el-radio
-                          v-for="option in item3.component.options"
-                          :key="option.value"
-                          :label="option.value"
-                        >
-                          {{option.label}}
-                        </el-radio>
-                      </template>
-                    </el-radio-group>
-                    <el-checkbox-group
-                      v-else-if="item3.component && item3.component.name === 'el-checkbox'"
-                      v-model="scope.row[item3.key]"
-                      v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item3.component) : item3.component"
-                      @change="handleCellDataChange($event, {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
-                    >
-                      <template v-if="item3.component.buttonMode">
-                        <el-checkbox-button
-                          v-for="option in item3.component.options"
-                          :key="option.value"
-                          :label="option.value"
-                        >
-                          {{option.label}}
-                        </el-checkbox-button>
-                      </template>
-                      <template v-else>
-                        <el-checkbox
-                          v-for="option in item3.component.options"
-                          :key="option.value"
-                          :label="option.value"
-                        >
-                          {{option.label}}
-                        </el-checkbox>
-                      </template>
-                    </el-checkbox-group>
-                    <el-select
-                      v-else-if="item3.component && item3.component.name === 'el-select'"
-                      v-model="scope.row[item3.key]"
-                      v-bind="$d2CrudSize ? Object.assign({ size: $d2CrudSize}, item3.component) : item3.component"
-                      @change="handleCellDataChange($event, {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
-                    >
-                      <el-option
-                        v-for="option in item3.component.options"
-                        :key="option.value"
-                        v-bind="option"
-                      >
-                      </el-option>
-                    </el-select>
-                    <render-custom-component
-                      v-else-if="item3.component && item3.component.name"
-                      v-model="scope.row[item3.key]"
-                      :component-name="item3.component.name"
-                      :props="item3.component.props ? item3.component.props : null"
-                      @change="handleCellDataChange($event,  {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
-                      :scope="scope">
-                    </render-custom-component>
-                    <render-component
-                      v-else-if="item3.component && item3.component.render"
-                      :render-function="item3.component.render"
-                      @change="handleCellDataChange($event, {rowIndex: scope.$index, key: item3.key, value: scope.row[item3.key], row: scope.row})"
-                      :scope="scope"
-                    >
-                    </render-component>
-                    <template v-else>{{item3.formatter ? item3.formatter(scope.row, scope.column, _get(scope.row, item3.key), scope.$index) : _get(scope.row, item3.key)}}</template>
-                  </template>
-                  <!-- <d2-column v-if="item.children" :columns="item.children"></d2-column> -->
-                </el-table-column>
-              </template>
-              <!-- <d2-column v-if="item.children" :columns="item.children"></d2-column> -->
-            </el-table-column>
-          </template>
-          <!-- <d2-column v-if="item.children" :columns="item.children"></d2-column> -->
         </el-table-column>
         <!-- <d2-column :columns="columns"></d2-column> -->
         <el-table-column

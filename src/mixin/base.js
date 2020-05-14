@@ -39,6 +39,12 @@ export default {
      */
     selectionRow: {
       default: null
+    },
+    /**
+     * @description 行展开
+     */
+    expandRow: {
+      default: null
     }
   },
   methods: {
