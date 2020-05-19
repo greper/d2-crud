@@ -13,11 +13,16 @@ export default {
      * @description 根据dialog模式渲染不同表单
      */
     handleFormTemplateMode (key) {
+      let item = null
       if (this.formMode === 'edit') {
-        return this.editTemplateStorage[key]
+        item = this.editTemplateStorage[key]
       } else if (this.formMode === 'add') {
-        return this.addTemplateStorage[key]
+        item = this.addTemplateStorage[key]
       }
+      if (item == null) {
+        item = { component: {} }
+      }
+      return item
     },
     /**
      * @description 根据dialog模式渲染不同表单校验规则
