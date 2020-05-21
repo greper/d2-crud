@@ -241,6 +241,7 @@
                   :component-name="handleFormTemplateMode(key).component.name"
                   :props="handleFormTemplateMode(key).component.props ? handleFormTemplateMode(key).component.props : null"
                   @change="handleFormDataChange($event,key)"
+                  :ref="'form_'+key"
                 >
                 </render-custom-component>
                 <render-component
